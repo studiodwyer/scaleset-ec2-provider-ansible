@@ -1,0 +1,30 @@
+---
+- name: create config directory
+  ansible.builtin.file:
+    path: "{{ scaleset_ec2_provider_config_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: create environment file
+  ansible.builtin.template:
+    src: scaleset_ec2_provider.env.j2
+    dest: "{{ scaleset_ec2_provider_config_dir }}/scaleset-ec2-provider.env"
+    mode: "0600"
+  notify: restart scaleset-ec2-provider
+  no_log: true
+
+- name: create systemd unit
+  ansible.builtin.template:
+    src: scaleset_ec2_provider.service.j2
+    dest: /etc/systemd/system/scaleset-ec2-provider.service
+    mode: "0644"
+  notify:
+    - reload systemd
+    - restart scaleset-ec2-provider
+
+- name: enable and start scaleset-ec2-provider
+  ansible.builtin.systemd:
+    name: scaleset-ec2-provider
+    enabled: true
+    state: started
+    daemon_reload: true

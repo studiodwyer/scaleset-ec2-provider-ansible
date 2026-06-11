@@ -1,0 +1,6 @@
+---
+- name: install scaleset-ec2-provider
+  ansible.builtin.include_tasks: install.yml
+
+- name: configure scaleset-ec2-provider
+  ansible.builtin.include_tasks: configure.yml

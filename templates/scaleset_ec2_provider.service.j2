@@ -1,0 +1,44 @@
+[Unit]
+Description=EC2 Scale Set for GitHub Actions
+After=network.target
+Wants=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+
+[Service]
+Type=simple
+User=root
+EnvironmentFile={{ scaleset_ec2_provider_config_dir }}/scaleset-ec2-provider.env
+ExecStartPre=-{{ scaleset_ec2_provider_install_dir }}/scaleset-ec2-provider delete \
+    --url "{{ scaleset_ec2_provider_url }}" \
+    --name "{{ scaleset_ec2_provider_name }}" \
+    --app-client-id "{{ scaleset_ec2_provider_github_app_client_id }}" \
+    --app-installation-id "{{ scaleset_ec2_provider_github_app_installation_id }}" \
+    --app-private-key ${GITHUB_APP_PRIVATE_KEY}
+ExecStart={{ scaleset_ec2_provider_install_dir }}/scaleset-ec2-provider run \
+    --url "{{ scaleset_ec2_provider_url }}" \
+    --name "{{ scaleset_ec2_provider_name }}" \
+    --app-client-id "{{ scaleset_ec2_provider_github_app_client_id }}" \
+    --app-installation-id "{{ scaleset_ec2_provider_github_app_installation_id }}" \
+    --app-private-key ${GITHUB_APP_PRIVATE_KEY} \
+    --ami-id "{{ scaleset_ec2_provider_ami_id }}" \
+    --subnet-id "{{ scaleset_ec2_provider_subnet_id }}" \
+    --security-group-ids "{{ scaleset_ec2_provider_security_group_ids | join(',') }}" \
+    --instance-types "{{ scaleset_ec2_provider_instance_types | join(',') }}" \
+    --max-runners {{ scaleset_ec2_provider_max_runners }} \
+    --min-runners {{ scaleset_ec2_provider_min_runners }} \
+    --metrics-port {{ scaleset_ec2_provider_metrics_port }} \
+    --log-level "{{ scaleset_ec2_provider_log_level }}" \
+    --log-format "{{ scaleset_ec2_provider_log_format }}"{% if scaleset_ec2_provider_iam_instance_profile %} \
+    --iam-instance-profile "{{ scaleset_ec2_provider_iam_instance_profile }}"{% endif %}{% if scaleset_ec2_provider_key_name %} \
+    --key-name "{{ scaleset_ec2_provider_key_name }}"{% endif %}{% if scaleset_ec2_provider_labels %} \
+    --labels "{{ scaleset_ec2_provider_labels | join(',') }}"{% endif %}{% if scaleset_ec2_provider_spot %} \
+    --spot{% endif %}
+
+
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

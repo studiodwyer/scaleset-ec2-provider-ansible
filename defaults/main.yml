@@ -1,0 +1,29 @@
+---
+scaleset_ec2_provider_version: "latest"
+scaleset_ec2_provider_arch: "x86_64"
+scaleset_ec2_provider_install_dir: "/usr/local/bin"
+scaleset_ec2_provider_config_dir: "/etc/scaleset-ec2-provider"
+scaleset_ec2_provider_github_base_url: "https://github.com/scaleset-ec2-provider/scaleset-ec2-provider/releases/download"
+
+scaleset_ec2_provider_url: ""
+scaleset_ec2_provider_name: ""
+scaleset_ec2_provider_aws_region: ""
+
+scaleset_ec2_provider_github_app_client_id: ""
+scaleset_ec2_provider_github_app_installation_id: ""
+scaleset_ec2_provider_github_app_pem: ""
+
+scaleset_ec2_provider_ami_id: ""
+scaleset_ec2_provider_subnet_id: ""
+scaleset_ec2_provider_security_group_ids: []
+scaleset_ec2_provider_instance_types: ["m5.large"]
+scaleset_ec2_provider_iam_instance_profile: ""
+scaleset_ec2_provider_key_name: ""
+
+scaleset_ec2_provider_max_runners: 10
+scaleset_ec2_provider_min_runners: 0
+scaleset_ec2_provider_metrics_port: 8080
+scaleset_ec2_provider_log_level: "info"
+scaleset_ec2_provider_log_format: "text"
+scaleset_ec2_provider_labels: []
+scaleset_ec2_provider_spot: false

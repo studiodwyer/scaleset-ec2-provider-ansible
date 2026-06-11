@@ -1,0 +1,33 @@
+---
+- name: check if scaleset-ec2-provider is installed
+  ansible.builtin.stat:
+    path: "{{ scaleset_ec2_provider_install_dir }}/scaleset-ec2-provider"
+  register: scaleset_ec2_provider_binary_stat
+
+- name: download and install scaleset-ec2-provider
+  when:
+    - not scaleset_ec2_provider_binary_stat.stat.exists
+  block:
+    - name: create temp directory
+      ansible.builtin.tempfile:
+        state: directory
+      register: scaleset_ec2_provider_temp_dir
+
+    - name: download scaleset-ec2-provider
+      ansible.builtin.unarchive:
+        src: "{{ scaleset_ec2_provider_github_base_url }}/v{{ scaleset_ec2_provider_version }}/scaleset-ec2-provider_{{ scaleset_ec2_provider_version }}_Linux_{{ scaleset_ec2_provider_arch }}.tar.gz"
+        dest: "{{ scaleset_ec2_provider_temp_dir.path }}"
+        remote_src: true
+
+    - name: install binary
+      ansible.builtin.copy:
+        src: "{{ scaleset_ec2_provider_temp_dir.path }}/scaleset-ec2-provider"
+        dest: "{{ scaleset_ec2_provider_install_dir }}/scaleset-ec2-provider"
+        mode: "0755"
+        remote_src: true
+      notify: restart scaleset-ec2-provider
+
+    - name: cleanup temp directory
+      ansible.builtin.file:
+        path: "{{ scaleset_ec2_provider_temp_dir.path }}"
+        state: absent
