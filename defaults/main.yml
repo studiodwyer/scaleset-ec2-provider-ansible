@@ -3,7 +3,7 @@ scaleset_ec2_provider_version: "latest"
 scaleset_ec2_provider_arch: "x86_64"
 scaleset_ec2_provider_install_dir: "/usr/local/bin"
 scaleset_ec2_provider_config_dir: "/etc/scaleset-ec2-provider"
-scaleset_ec2_provider_github_base_url: "https://github.com/scaleset-ec2-provider/scaleset-ec2-provider/releases/download"
+scaleset_ec2_provider_github_base_url: "https://github.com/studiodwyer/scaleset-ec2-provider"
 
 scaleset_ec2_provider_url: ""
 scaleset_ec2_provider_name: ""
