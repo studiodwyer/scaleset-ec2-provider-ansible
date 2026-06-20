@@ -1,9 +1,9 @@
 ---
-- name: reload systemd
+- name: Reload systemd
   ansible.builtin.systemd:
     daemon_reload: true
 
-- name: restart scaleset-ec2-provider
+- name: Restart scaleset-ec2-provider
   ansible.builtin.systemd:
     name: scaleset-ec2-provider
     state: restarted
